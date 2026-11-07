@@ -1,0 +1,24 @@
+bundle:
+  name: cdc_customer
+
+include:
+  - resources/*.yml
+
+variables:
+  pipeline_root:
+    default: ./ETL_LF_PIPELINE_CUSTOMER_CDC
+
+resources:
+  pipelines:
+    customer_cdc:
+      name: customer-cdc-${bundle.target}
+      catalog: customer_dev
+      target: lakeflow_schema
+      serverless: true
+      libraries:
+        - glob:
+            include: ${var.pipeline_root}/transformations/*.py
+
+targets:
+  dev:
+    default: true
